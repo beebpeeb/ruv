@@ -24,7 +24,7 @@ To run the app in development mode:
 poetry run uvicorn app:app --reload
 ```
 
-Open [localhost:8080](http://localhost:8080/) in your web browser to see the running app.
+Open [localhost:8000](http://localhost:8000/) in your web browser to see the running app.
 
 ## Test
 
