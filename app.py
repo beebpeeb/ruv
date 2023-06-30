@@ -4,7 +4,8 @@ import logging
 
 from babel.dates import format_date
 from httpx import AsyncClient, RequestError
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
+from pydantic.alias_generators import to_camel
 from starlette.applications import Starlette
 from starlette.requests import Request
 from starlette.routing import Mount, Route
@@ -12,22 +13,19 @@ from starlette.staticfiles import StaticFiles
 from starlette.templating import Jinja2Templates
 
 
-class Listing(BaseModel):
+class Listing(BaseModel, alias_generator=to_camel, str_strip_whitespace=True):
+    description: str
     is_live: bool = Field(alias="live")
-    original_description: str = Field(alias="description")
-    start_time: datetime = Field(alias="startTime")
+    start_time: datetime
     title: str
 
-    class Config:
-        anystr_strip_whitespace = True
+    @property
+    def details(self) -> str:
+        return self.description.removesuffix(" e.").rstrip()
 
     @property
     def is_repeat(self) -> bool:
-        return self.original_description.endswith(" e.")
-
-    @property
-    def description(self) -> str:
-        return self.original_description.removesuffix(" e.").rstrip()
+        return self.description.endswith(" e.")
 
     @property
     def time(self) -> str:
