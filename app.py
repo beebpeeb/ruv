@@ -39,7 +39,7 @@ async def get_listings() -> list[Listing]:
             logging.info("Fetching schedule data")
             response = await client.get("https://apis.is/tv/ruv")
             results = response.json()["results"]
-            listings = [Listing.parse_obj(listing) for listing in results]
+            listings = [Listing.model_validate(listing) for listing in results]
         except (RequestError, JSONDecodeError, LookupError) as error:
             logging.error(error)
         return listings
