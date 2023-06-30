@@ -36,5 +36,5 @@ There are currently no tests.
 [htmx]: https://htmx.org/
 [jinja2]: https://pypi.org/project/Jinja2/
 [poetry]: https://python-poetry.org/
-[pydantic]: https://pydantic-docs.helpmanual.io/
+[pydantic]: https://pydantic.dev/
 [starlette]: https://pypi.org/project/starlette/

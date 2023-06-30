@@ -69,7 +69,7 @@ routes = [
 ]
 
 
-app = Starlette(routes=routes)
+app = Starlette(debug=True, routes=routes)
 
 app.state.AUTHOR = "Paul Burt"
 app.state.TITLE = "Dagskrá RÚV"
