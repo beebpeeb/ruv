@@ -8,8 +8,7 @@ from pydantic import BaseModel, ConfigDict
 from pydantic.alias_generators import to_camel
 from starlette.applications import Starlette
 from starlette.requests import Request
-from starlette.routing import Mount, Route
-from starlette.staticfiles import StaticFiles
+from starlette.routing import Route
 from starlette.templating import Jinja2Templates
 
 
@@ -47,7 +46,7 @@ async def get_listings() -> list[Listing]:
         return listings
 
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates("templates")
 
 
 def homepage_route(request: Request):
@@ -65,7 +64,6 @@ async def listings_route(request: Request):
 routes = [
     Route("/", homepage_route),
     Route("/_listings", listings_route),
-    Mount("/static", StaticFiles(directory="static")),
 ]
 
 
