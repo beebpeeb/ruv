@@ -30,14 +30,13 @@ class Listing(BaseModel):
 
     @property
     def time(self) -> str:
-        return self.start_time.strftime("%H:%M")
+        return f"{self.start_time:%H:%M}"
 
 
 async def get_listings() -> list[Listing]:
     async with AsyncClient() as client:
         listings = []
         try:
-            logging.info("Fetching schedule data")
             response = await client.get("https://apis.is/tv/ruv")
             results = response.json()["results"]
             listings = [Listing.model_validate(listing) for listing in results]
