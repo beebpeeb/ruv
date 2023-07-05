@@ -60,10 +60,10 @@ async def listings_route(request: Request):
     return templates.TemplateResponse("_listings.html", context)
 
 
-routes = [
+routes = (
     Route("/", homepage_route),
     Route("/_listings", listings_route),
-]
+)
 
 
 app = Starlette(debug=True, routes=routes)
