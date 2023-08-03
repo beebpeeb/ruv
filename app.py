@@ -1,10 +1,10 @@
-from datetime import date, datetime
-from json import JSONDecodeError
+from datetime import date
+import json
 import logging
 
+import httpx
 from babel.dates import format_date
-from httpx import AsyncClient, RequestError
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, NaiveDatetime
 from pydantic.alias_generators import to_camel
 from starlette.applications import Starlette
 from starlette.requests import Request
@@ -17,12 +17,16 @@ class Listing(BaseModel):
 
     description: str
     live: bool
-    start_time: datetime
+    start_time: NaiveDatetime
     title: str
 
     @property
     def details(self) -> str:
         return self.description.removesuffix(" e.").rstrip()
+
+    @property
+    def human_date(self) -> str:
+        return format_date(self.start_time.date(), locale="is", format="full")
 
     @property
     def repeat(self) -> bool:
@@ -33,30 +37,33 @@ class Listing(BaseModel):
         return f"{self.start_time:%H:%M}"
 
 
+http = httpx.AsyncClient()
+
+
 async def get_listings() -> list[Listing]:
-    async with AsyncClient() as client:
-        listings = []
-        try:
-            response = await client.get("https://apis.is/tv/ruv")
-            results = response.json()["results"]
-            listings = [Listing.model_validate(listing) for listing in results]
-        except (RequestError, JSONDecodeError, LookupError) as error:
-            logging.error(error)
-        return listings
+    listings: list[Listing] = []
+    try:
+        response = await http.get("https://apis.is/tv/ruv")
+        results = response.json()["results"]
+        listings = [Listing.model_validate(listing) for listing in results]
+    except (httpx.RequestError, json.JSONDecodeError, LookupError) as error:
+        logging.error(error)
+    return listings
 
 
 templates = Jinja2Templates("templates")
 
 
 def homepage_route(request: Request):
-    today = format_date(date.today(), format="full", locale="is")
-    context = dict(request=request, today=today)
+    context = dict(request=request)
     return templates.TemplateResponse("index.html", context)
 
 
-async def listings_route(request: Request):
+async def listings_route(request: Request, today: str | None = None):
     listings = await get_listings()
-    context = dict(request=request, listings=listings)
+    if listings:
+        today = listings[0].human_date
+    context = dict(request=request, listings=listings, today=today)
     return templates.TemplateResponse("_listings.html", context)
 
 
