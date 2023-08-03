@@ -1,8 +1,15 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 100
+
 [tool.poetry]
 name = "ruv"
 version = "0.1.0"
 description = ""
-authors = ["Paul Burt <peeb@proton.me>"]
+authors = ["Paul Burt <paul.burt@bbc.co.uk>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -10,9 +17,9 @@ python = "^3.11"
 babel = "^2.12.1"
 httpx = "^0.24.1"
 jinja2 = "^3.1.2"
-pydantic = "^2.0.1"
-starlette = "^0.28.0"
-uvicorn = "^0.22.0"
+pydantic = "^2.1.1"
+starlette = "^0.31.0"
+uvicorn = "^0.23.2"
 
 [tool.pyright]
 reportUnknownMemberType = false
@@ -22,9 +29,5 @@ venvPath = "."
 [tool.pyright.analysis]
 typeCheckingMode = "strict"
 
-[tool.black]
-line-length = 88
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.ruff]
+line-length = 100

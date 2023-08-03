@@ -1,12 +1,13 @@
-from datetime import date
 import json
 import logging
+from pathlib import Path
 
 import httpx
 from babel.dates import format_date
 from pydantic import BaseModel, ConfigDict, NaiveDatetime
 from pydantic.alias_generators import to_camel
 from starlette.applications import Starlette
+from starlette.config import Config
 from starlette.requests import Request
 from starlette.routing import Route
 from starlette.templating import Jinja2Templates
@@ -51,7 +52,7 @@ async def get_listings() -> list[Listing]:
     return listings
 
 
-templates = Jinja2Templates("templates")
+templates = Jinja2Templates(Path("templates"))
 
 
 def homepage_route(request: Request):
@@ -72,8 +73,11 @@ routes = (
     Route("/_listings", listings_route),
 )
 
+config = Config(Path(".env"))
 
-app = Starlette(debug=True, routes=routes)
+DEBUG = config("DEBUG", cast=bool, default=False)
+
+app = Starlette(debug=DEBUG, routes=routes)
 
 app.state.AUTHOR = "Paul Burt"
 app.state.TITLE = "Dagskrá RÚV"
