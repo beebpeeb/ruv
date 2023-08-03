@@ -55,7 +55,7 @@ async def get_listings() -> list[Listing]:
 templates = Jinja2Templates(Path("templates"))
 
 
-def homepage_route(request: Request):
+def index_route(request: Request):
     context = dict(request=request)
     return templates.TemplateResponse("index.html", context)
 
@@ -69,7 +69,7 @@ async def listings_route(request: Request, today: str | None = None):
 
 
 routes = (
-    Route("/", homepage_route),
+    Route("/", index_route),
     Route("/_listings", listings_route),
 )
 
