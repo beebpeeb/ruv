@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: ruv
+Version: 0.1.0
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: babel>=2.12.1
+Requires-Dist: httpx>=0.24.1
+Requires-Dist: jinja2>=3.1.2
+Requires-Dist: pydantic>=2.3.0
+Requires-Dist: starlette>=0.31.1
+Requires-Dist: uvicorn>=0.23.2
+
+# Starlette + htmx
+
+A small Python web application which uses [starlette][] and [htmx][]
+to demonstrate an approach to [HTML over the Wire][html-over-the-wire].
+
+Data validation is provided by [pydantic][].
+
+HTML templating is provided by [jinja2][].
+
+## Install
+
+Make sure you have Python >= 3.11 and [Poetry] installed, then run the
+following:
+
+```sh
+poetry install 
+```
+
+## Run
+
+To run the app in development mode:
+
+```sh
+poetry run uvicorn app:app --reload
+```
+
+Open [localhost:8000](http://localhost:8000/) in your web browser to see the running app.
+
+## Test
+
+There are currently no tests.
+
+
+
+[html-over-the-wire]: https://dev.to/rajasegar/html-over-the-wire-is-the-future-of-web-development-542c
+[htmx]: https://htmx.org/
+[jinja2]: https://pypi.org/project/Jinja2/
+[poetry]: https://python-poetry.org/
+[pydantic]: https://pydantic.dev/
+[starlette]: https://pypi.org/project/starlette/

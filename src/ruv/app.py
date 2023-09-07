@@ -26,7 +26,7 @@ class Listing(BaseModel):
         return self.description.removesuffix(" e.").rstrip()
 
     @property
-    def human_date(self) -> str:
+    def human_readable_date(self) -> str:
         return format_date(self.start_time.date(), locale="is", format="full")
 
     @property
@@ -63,7 +63,7 @@ def index_route(request: Request):
 async def listings_route(request: Request, today: str | None = None):
     listings = await get_listings()
     if listings:
-        today = listings[0].human_date
+        today = listings[0].human_readable_date
     context = dict(request=request, listings=listings, today=today)
     return templates.TemplateResponse("_listings.html", context)
 
