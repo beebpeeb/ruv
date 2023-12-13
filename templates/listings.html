@@ -12,10 +12,10 @@
         {% if listing.details %}
         <p class="text-muted">{{ listing.details }}</p>
         {% endif %}
-        {% if listing.repeat %}
-        <p class="badge bg-success">endurtekinn</p>
-        {% elif listing.live %}
+        {% if listing.live %}
         <p class="badge bg-danger">bein útsending</p>
+        {% elif listing.repeat %}
+        <p class="badge bg-success">endurtekinn</p>
         {% endif %}
     </div>
 </div>
