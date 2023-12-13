@@ -38,10 +38,8 @@ class Listing(BaseModel):
         return f"{self.start_time:%H:%M}"
 
 
-http = httpx.AsyncClient()
-
-
 async def get_listings() -> list[Listing]:
+    http = httpx.AsyncClient()
     listings: list[Listing] = []
     try:
         response = await http.get("https://apis.is/tv/ruv")
@@ -65,12 +63,12 @@ async def listings_route(request: Request, today: str | None = None):
     if listings:
         today = listings[0].human_readable_date
     context = dict(request=request, listings=listings, today=today)
-    return templates.TemplateResponse("_listings.html", context)
+    return templates.TemplateResponse("listings.html", context)
 
 
 routes = (
     Route("/", index_route),
-    Route("/_listings", listings_route),
+    Route("/listings", listings_route),
 )
 
 config = Config(Path(".env"))
