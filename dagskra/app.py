@@ -36,9 +36,12 @@ class Listing(BaseModel):
         return f"{self.start_time:%H:%M}"
 
 
-async def get_listings() -> list[Listing]:
+Listings = list[Listing]
+
+
+async def get_listings() -> Listings:
+    listings: Listings = []
     http = httpx.AsyncClient()
-    listings: list[Listing] = []
     try:
         response = await http.get("https://apis.is/tv/ruv")
         results = response.json()["results"]
